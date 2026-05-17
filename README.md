@@ -38,7 +38,7 @@ style: |
   }
 
   section.puzzlers li {
-    font-size: 50px;
+    /* font-size: 50px; */
   }
 ---
 
@@ -57,7 +57,9 @@ style: |
 
 このコードを実行した結果は？
 ```java
-Character.isEmoji('🤧');
+void main() {
+  println(Character.isEmoji('🤧'));
+}
 ```
 
 1. true
@@ -114,7 +116,102 @@ $2 ==> true
 
 ---
 
-# サロゲートペアとは？
+# おさらい：Unicode とは？
+
+- 全世界のあらゆる文字を含む文字集合
+- 文字に **コードポイント（符号位置）** を割り当てている
+- 範囲は、U+0000 ～ U+10FFFF （21ビット）
+  - U+0000 - U+FFFF までを**基本多言語面**という
+    - 例：あ= U+3042
+  - U+10000 - U+10FFFF を**追加面**という
+    - 例：🤧 = U+1F927
+- 絵文字の多くは追加面にある
+---
+
+# おさらい：UTF-16 とは？
+
+- Unicode を **16bit のコードユニット**で扱う
+  - Java では、コードユニット = char 型
+  - 例：あ = \u3042
+- 追加面にあるコードポイントは、2つのコードユニットを使って扱う
+  - 例：🤧 = \uD83E \uDD27
+  - この2つセットのことを**サロゲートペア**という
+
+---
+
+# 冒頭のコードの挙動
+
+```java
+Character.isEmoji('🤧');
+↓
+Character.isEmoji(\uD83E\uDD27);
+```
+
+- コンパイラが文字リテラルをコードユニットに置き換える
+- この絵文字の場合、**2つの**コードユニットになってしまうので、言語仕様違反によりコンパイルエラーになる
+  > 文字リテラルはUTF-16コードユニットのみを表すことができ、つまり\u0000から\uffffまでの値に限定されます。
+
+
+---
+
+# 正しい処理
+
+- isEmoji の引数に**コードポイントを指定する**
+
+```java
+Character.isEmoji(0x1F927)
+```
+
+- もしくは、文字列からコードポイントを取得する
+
+```java
+Character.isEmoji("🤧".charCodeAt(0))
+```
+
+
+---
+
+# ありがちな間違い
+
+```java
+Character.isEmoji("🤧".charAt(0))
+```
+
+- **コードユニット**を取得している
+  - 上位サロゲートのみになる（`\uD83E`）
+  - 表示すると無効な文字（いわゆる豆腐）になる
+- この値は絵文字ではないので false を返す
+
+<hr>
+
+- コンパイラですら間違っていたぐらいありがちなミス
+
+---
+
+# 間違えていても動くこともある
+
+```java
+Character.isEmoji('✌')
+```
+
+- ✌ = U+270C = \u270C
+- コードポイントもコードユニットも同じ
+  - つまり、codePointAt でも charAt でも同じように動く
+
+<hr>
+
+- 入力文字によって、バグったりバグらなかったりという微妙な挙動になるので要注意
+
+---
+
+# 絵文字に限らない
+
+- 絵文字以外でもサロゲートペアはある
+  - 例：𩸽(ほっけ) = U+29E3D = \uD867 \uDE3D
+- 英数字以外を扱う際は、必ずコードポイント単位で扱うのが安全
+
+---
+
 
 
 ---
@@ -162,4 +259,7 @@ Java 25 と 26 で結果が異なるのは？
 # 参考資料
 
 - Java 25 で修正されたバグ
- * [JDK-8354908: javac mishandles supplementary character in character literal](https://bugs.openjdk.org/browse/JDK-8354908)
+  - [JDK-8354908: javac mishandles supplementary character in character literal](https://bugs.openjdk.org/browse/JDK-8354908)
+    - 当初のチケット名は
+     "Character.isEmoji(int) returns incorrect results"
+    - つまり、API のバグだと思われていたw
