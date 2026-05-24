@@ -15,6 +15,14 @@ style: |
     line-height: 1.2;
   }
 
+  /** 詰め気味に微調整 **/
+  section > ul, marp-pre {
+    margin: 0.5em 0;
+  }
+  h1 {
+    margin-bottom: 0.5em;
+  }
+
   section.lead img {
     border-radius: 50%;
     vertical-align: middle;
@@ -161,7 +169,6 @@ Character.isEmoji(\uD83E\uDD27);
   → 言語仕様違反によりコンパイルエラーになる
   > 文字リテラルはUTF-16コードユニットのみを表すことができ、つまり\u0000から\uffffまでの値に限定されます。（JLS 3.10.4. Character Literals より）
 
-
 ---
 
 # 正しい処理
@@ -212,7 +219,8 @@ Character.isEmoji('✌')
 # 補足：絵文字に限らない
 
 - 絵文字以外でもサロゲートペアは使われている
-- 英数字以外を含む場合は、**必ず**コードポイント単位で扱うのが安全
+- 英数字以外を含むなら、**必ず**コードポイント単位で扱う
+  - より厳密には、書記素クラスタ単位で扱う（後述）
 
 |文字|(よみ)|コードポイント|コードユニット|
 |--|--|--|--|
@@ -256,11 +264,11 @@ Character.isEmoji(…) で true になる文字は？
 - Character.isEmoji(int codePoint) はこの定義に従って戻り値を決めている
 
 ```
-0023        ; Emoji   # E0.0   [1] (#️)       hash sign
-002A        ; Emoji   # E0.0   [1] (*️)       asterisk
-0030..0039  ; Emoji   # E0.0  [10] (0️..9️)    digit zero..digit nine
-00A9        ; Emoji   # E0.6   [1] (©️)       copyright
-00AE        ; Emoji   # E0.6   [1] (®️)       registered
+0023        ; Emoji  # E0.0   [1] (#️)     hash sign
+002A        ; Emoji  # E0.0   [1] (*️)     asterisk
+0030..0039  ; Emoji  # E0.0  [10] (0️..9️)  digit zero..digit nine
+00A9        ; Emoji  # E0.6   [1] (©️)     copyright
+00AE        ; Emoji  # E0.6   [1] (®️)     registered
 ```
 ---
 
@@ -268,10 +276,8 @@ Character.isEmoji(…) で true になる文字は？
 
 - **絵文字シーケンス**により、絵文字となるから
   - ↑ 複数のコードポイントを組み合わせて、1つの絵文字とする仕組み
-- 例：0️⃣ という絵文字
-  - **U+0030**, U+FE0F, U+20E3 という3つのコードポイントの並びで構成されている
-- つまり、1文字 &#x2260; 1コードポイント
-  - 1文字のことを書記素クラスターという
+- 例：0️⃣ （キーキャップ 0）という絵文字
+  - **U+0030**, U+FE0F, U+20E3 という3つのコードポイントの並びで1つの絵文字が構成されている
 
 ---
 
@@ -280,10 +286,10 @@ Character.isEmoji(…) で true になる文字は？
 - U+0030
   - 数字のゼロ 0
 - U+FE0F
-  - 異体字セレクター16（Variable Selector 16）
-  - 明示的に絵文字で表示するという指定
+  - 異体字セレクター16（Variation Selector 16, VS16）
+  - 明示的に**絵文字で表示する**という指定
 - U+20E3
-  - キーを表す合成文字（□） 
+  - キーキャップを表す合成文字（□） 
 
 ---
 
@@ -308,17 +314,42 @@ Character.isEmoji(…) で true になる文字は？
   - [Unicode Emoji v17.0](https://unicode.org/emoji/charts/index.html)
 - 例：
   - ❤️‍🔥 = ❤ 🔥（ U+2764 U+FE0F U+200D U+1F525 ）
-  - ❤️‍🩹 = ❤ 🩹（ U+2764 U+FE0F U+200D U+1F525 ）
+  - ❤️‍🩹 = ❤ 🩹（ U+2764 U+FE0F U+200D U+1FA79 ）
   - 🍋‍🟩 = 🍋 🟩（ U+1F34B U+200D U+1F7E9 ）
     - ライム = レモン + 緑色の四角
+
+---
+# 絵文字以外の例
+
+- 文字シーケンスは絵文字以外でも使われる
+  - 例：日本語の濁音の表記は2種類ある
+    - 単独コードポイント「が」（U+304C）
+    - 文字シーケンス「か&#x3099;」（U+304B, U+3099）
+- 絵文字の有無に関わらず、**シーケンスを考慮して処理を行う必要がある**
+
+<div class="info">
+単独コードポイントの「が」が使われることが多いが、macOS のファイル名は文字シーケンスの方になっている
+</div>
+
 ---
 
-# シーケンス単位で扱うには？
+# シーケンスの罠
 
-- シーケンスをひとかたまりで処理をする必要がある
-- Java 20 以降なら、**BreakIterator.getCharacterInstance()** で扱える
+- シーケンスの途中でぶった切ると文字が変わってしまう
+  - 例： "すっぱい🍋‍🟩".substring(0, 7);
+    　　==> "**すっぱい🍋‍**" （ライムがレモンになる）
+  - 例："\u304B\u3099".codePointAt(0);
+    　　==> "か**‍**"（が の濁音がなくなる）
+
+- ユーザが認識する1文字 = **書記素クラスタ**（Grapheme Cluster）単位で処理をする必要がある
+
+---
+
+# 書記素クラスタ単位で扱うには？
+
+- Java 20 以降なら、**BreakIterator.getCharacterInstance()** で取り出す
   - [\[JDK-8291660\] Grapheme support in BreakIterator - Java Bug System](https://bugs.openjdk.org/browse/JDK-8291660)
-  - それ以前のバージョンなら、ICU4J の BreakIterator を使う
+- それ以前のバージョンなら、[ICU4J](https://unicode-org.github.io/icu/userguide/icu4j/) の BreakIterator を使う
 
 ---
 
@@ -341,27 +372,110 @@ public static List<String> deconstruct(String text) {
 
 ---
 
-# 参考資料
+# 補足：絵文字の判定メソッド
 
-- Java 25 で修正されたバグ
-  - [JDK-8354908: javac mishandles supplementary character in character literal](https://bugs.openjdk.org/browse/JDK-8354908)
-    - 当初のチケット名は
-     "Character.isEmoji(int) returns incorrect results"
-    - つまり、API のバグだと思われていた
+- Character には絵文字判定メソッドが複数ある
+  - isEmoji
+  - isEmojiPresentation
+  - isEmojiModifier
+  - isEmojiModifierBase
+  - isEmojiComponent
+  - isExtendedPictographic
+- 何が違うのか？
 
 ---
 
-# メモ
+# isEmoji
 
-[Unicode 絵文字にまつわるあれこれ (絵文字の標準とプログラム上でのハンドリング) #Ruby - Qiita](https://qiita.com/_sobataro/items/47989ee4b573e0c2adfc)
-```
-emoji
-  ├ singleton (単体のコードポイントからなる絵文字)
-  └ emoji sequence (複数のコードポイントからなる絵文字)
-      ├ emoji core sequence (通常の絵文字)
-      │  ├ emoji combining sequence (囲み文字)
-      │  ├ emoji modifier sequence (skin tone 絵文字)
-      │  └ emoji flag sequence (国旗絵文字)
-      ├ emoji zwj sequence (家族絵文字、職業絵文字など)
-      └ emoji tag sequence (タグ絵文字)
-```
+- **絵文字になるかどうか**
+  - 絵文字の構成要素になりうる文字
+  - 単独で絵文字にならない文字（数字の 0 や # ）を含む
+
+---
+
+# isEmojiPresentation
+
+- **デフォルトで絵文字の表示になるか**どうか
+- 例：
+  - ハート &#x2665; （U+2665）は `false`
+    - 明示的に VS16 を付与すると絵文字 &#x2665;&#xFE0F; になる
+  - コーヒー &#x2615; （U+2615）は `true`
+    - 明示的に VS16 がなくても絵文字
+- 環境によっては、このプロパティ通りにならない
+  - iOS とか Android とか
+
+---
+
+# isEmojiModifier
+
+- **絵文字修飾子かどうか**
+  - Emoji Modifier Base と組み合わせて変化させる絵文字
+- いまのところ、5つの肌色だけが定義されている
+  -  🏻️（U+1F3B）,	🏼️（U+1F3FC）,	🏽️（U+1F3FD）,	🏾️（U+1F3FE）,	🏿️（U+1F3FF）,
+
+---
+
+# isEmojiModifierBase
+
+- **絵文字修飾子ベースかどうか**
+  - Emoji Modifier Base と組み合わることができる絵文字
+    - 人の顔や手など
+- 例：
+  - &#x270C;（U+270C）
+    - &#x270C;&#x1F3FD;（U+270C, U+1F3FC）
+  - &#x1F385;（U+1F385）
+    - &#x1F385;&#x1F3FD;（U+1F385, U+1F3FC）
+
+---
+
+# isEmojiComponent
+
+- **絵文字コンポーネントかどうか**
+  - 絵文字シーケンスでのみ使われる文字
+- 例：
+  - 数字： 0〜9（U+0030〜U+0039）
+  - 肌の色： 🏻️〜🏿️（U+1F3FB〜U+1F3FE）
+  - 髪の色：🦰️〜🦳️（U+1F9B0〜U+1F9B3）
+
+---
+
+# isExtendedPictographic
+
+- **拡張ピクチャかどうか**
+  - 単独で絵文字になる文字を判定するためのプロパティ
+- 書記素クラスタの分割処理で利用される
+- **将来の絵文字用に予約された領域**も含まれている
+
+---
+
+# 補足：絵文の判定方法
+
+- 簡易な実装
+  - 書記素クラスタに isExtendedPictographic が true になるコードポイントが含まれていれば絵文字と判定
+- 問題点：
+  - 旗シーケンス（&#x1F1FA;&#x1F1F8; など）やキーキャップシーケンス（&#x0030;&#xFE0F;&#x20E3; など）が絵文字と判定されない
+  - &#x25B6;&#xFE0E;（U+25B6）などの記号も絵文字と判定される
+
+---
+
+# 完璧な絵文字の判定方法
+
+- **存在しない**
+- Unicode の [emoji-test.txt](https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt) との総当りで判定すればできなくもない
+- ただ、絵文字で表示されるかどうかは最終的には環境依存
+    - 例：&#x25B6;&#xFE0E;（U+25B6）は、iOS では絵文字 &#x25B6;&#xFE0F; になる
+
+<hr>
+- 絵文字も平等に「文字」として扱うしかない
+
+
+---
+
+# 参考資料
+
+- [Unicode Emoji v17.0](https://unicode.org/emoji/charts/index.html)
+- [JDK-8354908: javac mishandles supplementary character in character literal](https://bugs.openjdk.org/browse/JDK-8354908)
+  - Java 25 で修正されたバグ
+  - 当初のチケット名は
+    "Character.isEmoji(int) returns incorrect results"
+  - つまり、API のバグだと思われていた
