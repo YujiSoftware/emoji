@@ -335,9 +335,7 @@ section.puzzlers li {
 }
 ;">
 <h1 id="%E6%AD%A3%E8%A7%A3">正解</h1>
-<ol start="3">
-<li>コンパイルエラー</li>
-</ol>
+<p><strong>3. コンパイルエラー</strong></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-java">IsEmoji.java:<span class="hljs-number">3</span>: エラー: 文字リテラルに複数のUTF-<span class="hljs-number">16</span>コード・ユニットが含まれています
         Character.isEmoji(<span class="hljs-string">&#x27;<img class="emoji" draggable="false" alt="🤧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f927.svg" data-marp-twemoji=""/>&#x27;</span>);
                            ^
@@ -2400,9 +2398,9 @@ section.puzzlers li {
 </li>
 <li>例：
 <ul>
-<li><img class="emoji" draggable="false" alt="❤️‍🔥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764-fe0f-200d-1f525.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="❤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🔥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f525.svg" data-marp-twemoji=""/>（ U+2764 U+FE0F U+200D U+1F525 ）</li>
-<li><img class="emoji" draggable="false" alt="❤️‍🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764-fe0f-200d-1fa79.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="❤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1fa79.svg" data-marp-twemoji=""/>（ U+2764 U+FE0F U+200D U+1FA79 ）</li>
-<li><img class="emoji" draggable="false" alt="🍋‍🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b-200d-1f7e9.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="🍋" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f7e9.svg" data-marp-twemoji=""/>（ U+1F34B U+200D U+1F7E9 ）
+<li><img class="emoji" draggable="false" alt="❤️‍🔥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764-fe0f-200d-1f525.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="❤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🔥" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f525.svg" data-marp-twemoji=""/>（ U+2764, U+FE0F, U+200D, U+1F525 ）</li>
+<li><img class="emoji" draggable="false" alt="❤️‍🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764-fe0f-200d-1fa79.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="❤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1fa79.svg" data-marp-twemoji=""/>（ U+2764, U+FE0F, U+200D, U+1FA79 ）</li>
+<li><img class="emoji" draggable="false" alt="🍋‍🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b-200d-1f7e9.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="🍋" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f7e9.svg" data-marp-twemoji=""/>（ U+1F34B, U+200D, U+1F7E9 ）
 <ul>
 <li>ライム = レモン + 緑色の四角</li>
 </ul>
@@ -2519,12 +2517,12 @@ section.puzzlers li {
 <li>例：日本語の濁音の表記は2種類ある
 <ul>
 <li>単独コードポイント「が」（U+304C）</li>
-<li>文字シーケンス「が」（U+304B, U+3099）</li>
+<li>文字シーケンス「か ゙」（U+304B, U+3099）</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>絵文字の有無に関わらず、<strong>シーケンスを考慮して処理を行う必要がある</strong></li>
+<li>そのため、絵文字の有無に関わらず<strong>シーケンスを考慮して処理を行う必要がある</strong></li>
 </ul>
 <div class="info">
 単独コードポイントの「が」が使われることが多いが、macOS のファイル名は文字シーケンスの方になっている
@@ -2975,6 +2973,404 @@ section.puzzlers li {
   /* font-size: 50px; */
 }
 ;">
+<h1 id="%E5%AE%9F%E8%A1%8C%E7%B5%90%E6%9E%9C">実行結果</h1>
+<ul>
+<li>&quot;🍋‍🟩が3️⃣個!&quot; → 5つに分割される</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Index</th>
+<th style="text-align:center">String</th>
+<th style="text-align:left">Codepoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center"><img class="emoji" draggable="false" alt="🍋‍🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b-200d-1f7e9.svg" data-marp-twemoji=""/></td>
+<td style="text-align:left">U+1F34B, U+200D, U+1F7E9</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">が</td>
+<td style="text-align:left">U+304B, U+3099</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center"><img class="emoji" draggable="false" alt="3️⃣" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/33-20e3.svg" data-marp-twemoji=""/></td>
+<td style="text-align:left">U+0033, U+FE0F, U+20E3</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">個</td>
+<td style="text-align:left">U+500B</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">!</td>
+<td style="text-align:left">U+0021</td>
+</tr>
+</tbody>
+</table>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-theme="gaia" data-style=":root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+" lang="ja-JP" style="--theme:gaia;--style::root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+;">
+<h1 id="%E7%B5%B5%E6%96%87%E5%AD%97%E3%81%AE%E6%95%B0%E3%81%88%E6%96%B9">絵文字の数え方</h1>
+<ul>
+<li><img class="emoji" draggable="false" alt="🍋‍🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b-200d-1f7e9.svg" data-marp-twemoji=""/> （U+1F34B, U+200D, U+1F7E9）は何文字？
+<ul>
+<li>考え方によってばらばら</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">実装</th>
+<th style="text-align:left">単位</th>
+<th style="text-align:right">数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">人間</td>
+<td style="text-align:left">書記素クラスタの数</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">PostgreSQL の length 関数</td>
+<td style="text-align:left">コードポイントの数</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td style="text-align:left">Java の String.length() メソッド</td>
+<td style="text-align:left">UTF-16 の数</td>
+<td style="text-align:right">5</td>
+</tr>
+<tr>
+<td style="text-align:left">Go の len 関数</td>
+<td style="text-align:left">UTF-8 の数</td>
+<td style="text-align:right">11</td>
+</tr>
+</tbody>
+</table>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-theme="gaia" data-style=":root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+" lang="ja-JP" style="--theme:gaia;--style::root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+;">
+<h1 id="%E3%81%A9%E3%82%8C%E3%82%92%E6%96%87%E5%AD%97%E6%95%B0%E3%81%A8%E3%81%99%E3%81%B9%E3%81%8D">どれを文字数とすべき？</h1>
+<ul>
+<li><strong>仕様次第</strong></li>
+</ul>
+<hr />
+<ul>
+<li>見た目で判断したい<br />
+→ 書記素クラスタの数</li>
+<li>UTF-8 でテキストを保存する際のサイズを管理したい<br />
+→ UTF-8 のバイト数</li>
+<li>データベースのカラムの制限に合わせたい<br />
+→ コードポイント数</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-theme="gaia" data-style=":root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+" lang="ja-JP" style="--theme:gaia;--style::root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+
+section.puzzlers li {
+  /* font-size: 50px; */
+}
+;">
 <h1 id="%E8%A3%9C%E8%B6%B3%E7%B5%B5%E6%96%87%E5%AD%97%E3%81%AE%E5%88%A4%E5%AE%9A%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89">補足：絵文字の判定メソッド</h1>
 <ul>
 <li>Character には絵文字判定メソッドが複数ある
@@ -2990,7 +3386,7 @@ section.puzzlers li {
 <li>何が違うのか？</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3101,7 +3497,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="27" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3226,7 +3622,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="28" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3341,7 +3737,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3469,7 +3865,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3586,7 +3982,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3689,16 +4085,20 @@ section.puzzlers li {
 ;">
 <h1 id="isextendedpictographic">isExtendedPictographic</h1>
 <ul>
-<li><strong>拡張ピクチャかどうか</strong>
+<li><strong>拡張絵文字かどうか</strong>
 <ul>
-<li>単独で絵文字になる文字を判定するためのプロパティ</li>
+<li>単独で絵文字になる文字を判定するためのプロパティ
+<ul>
+<li>数字の 0 や # は<strong>含まない</strong></li>
 </ul>
 </li>
-<li>書記素クラスタの分割処理で利用される</li>
 <li><strong>将来の絵文字用に予約された領域</strong>も含まれている</li>
 </ul>
+</li>
+<li>書記素クラスタの分割処理の判断のためのもの</li>
+</ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3799,7 +4199,7 @@ section.puzzlers li {
   /* font-size: 50px; */
 }
 ;">
-<h1 id="%E8%A3%9C%E8%B6%B3%E7%B5%B5%E6%96%87%E3%81%AE%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95">補足：絵文の判定方法</h1>
+<h1 id="%E7%B5%B5%E6%96%87%E3%81%AE%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95">絵文の判定方法</h1>
 <ul>
 <li>簡易な実装
 <ul>
@@ -3814,7 +4214,7 @@ section.puzzlers li {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3928,7 +4328,7 @@ section.puzzlers li {
 <hr />
 - 絵文字も平等に「文字」として扱うしかない
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
