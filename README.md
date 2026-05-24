@@ -157,7 +157,8 @@ Character.isEmoji(\uD83E\uDD27);
 ```
 
 - コンパイラが文字リテラルをコードユニットに置き換える
-- この絵文字の場合、**2つの**コードユニットになってしまうので、言語仕様違反によりコンパイルエラーになる
+- この絵文字の場合、**2つの**コードユニットになってしまう
+  → 言語仕様違反によりコンパイルエラーになる
   > 文字リテラルはUTF-16コードユニットのみを表すことができ、つまり\u0000から\uffffまでの値に限定されます。（JLS 3.10.4. Character Literals より）
 
 
@@ -171,7 +172,7 @@ Character.isEmoji(\uD83E\uDD27);
 Character.isEmoji(0x1F927)
 ```
 
-- 文字列からコードポイントを取得する
+- 文字列からコードポイントを取得して指定する
 
 ```java
 Character.isEmoji("🤧".codePointAt(0))
@@ -208,7 +209,7 @@ Character.isEmoji('✌')
 
 ---
 
-# 絵文字に限らない
+# 補足：絵文字に限らない
 
 - 絵文字以外でもサロゲートペアは使われている
 - 英数字以外を含む場合は、**必ず**コードポイント単位で扱うのが安全
@@ -228,7 +229,7 @@ Character.isEmoji(…) で true になる文字は？
 
 | | 文字 | 説明 | コードポイント |
 |------|:--:|:--:|:--:|
-| 1 | 0 | ゼロ | U+0030 |
+| 1 | 0 | (数字の)ゼロ | U+0030 |
 | 2 | ? | はてな | U+003F |
 | 3 | ※ | 米印 | U+203B |
 | 4 |  ♫ | 音符 | U+266B |
@@ -241,7 +242,7 @@ Character.isEmoji(…) で true になる文字は？
 
 | | 文字 | 説明 | コードポイント | isEmoji |
 |------|:--:|:--:|:--:|:---:|
-| 1 | 0 | 数字のゼロ | U+0030 | <span class="emphasis">true</span> |
+| 1 | 0 | (数字の)ゼロ | U+0030 | <span class="emphasis">true</span> |
 | 2 | ? | はてな | U+003F | false |
 | 3 | ※ | 米印 | U+203B | false |
 | 4 |  ♫ | 音符 | U+266B | false |
@@ -251,32 +252,92 @@ Character.isEmoji(…) で true になる文字は？
 # なぜ？
 
 - **Unicode でそう定義されているから**
-  - emoji-data.txt という定義ファイルの Emoji プロパティ一覧に 0（U+0030）が含まれている
+  - [emoji-data.txt](https://www.unicode.org/Public/17.0.0/ucd/emoji/emoji-data.txt) という定義ファイルの Emoji プロパティ一覧に 0（U+0030）が含まれている
 - Character.isEmoji(int codePoint) はこの定義に従って戻り値を決めている
 
+```
+0023        ; Emoji   # E0.0   [1] (#️)       hash sign
+002A        ; Emoji   # E0.0   [1] (*️)       asterisk
+0030..0039  ; Emoji   # E0.0  [10] (0️..9️)    digit zero..digit nine
+00A9        ; Emoji   # E0.6   [1] (©️)       copyright
+00AE        ; Emoji   # E0.6   [1] (®️)       registered
+```
 ---
 
 # なぜ 0 は Emoji と定義？
 
-- <span class="underline">絵文字シーケンス</span>により、絵文字となるから
+- **絵文字シーケンス**により、絵文字となるから
   - ↑ 複数のコードポイントを組み合わせて、1つの絵文字とする仕組み
-
 - 例：0️⃣ という絵文字
-  - **U+0030**, U+FE0F, U+20E3 という3つのコードポイントで構成されている
-  - なにこれ？
+  - **U+0030**, U+FE0F, U+20E3 という3つのコードポイントの並びで構成されている
+- つまり、1文字 &#x2260; 1コードポイント
+  - 1文字のことを書記素クラスターという
 
 ---
 
 # 0️⃣ のコードポイント
 
-- 0️⃣：U+0030 U+FE0F U+20E3
-  - U+0030
-    - 数字のゼロ 0
-  - U+FE0F
-    - 異体字セレクター16
-    - 明示的に絵文字で表示するという指定
-  - U+20E3
-    - キーを表す合成文字
+- U+0030
+  - 数字のゼロ 0
+- U+FE0F
+  - 異体字セレクター16（Variable Selector 16）
+  - 明示的に絵文字で表示するという指定
+- U+20E3
+  - キーを表す合成文字（□） 
+
+---
+
+# Q. なぜこんな設計？
+
+- A. **互換性のため**
+
+<hr>
+
+- 0️⃣ に単独のコードポイントを割り当てた場合
+  - 対応していない環境では □（通称：豆腐）で表示される
+    - 何も伝わらない
+- 絵文字シーケンスの場合
+  - 対応していない環境では 0 □ と表示される
+    - 最低限の内容は伝わる
+
+---
+
+# 絵文字の傾向
+
+- 最近追加された絵文字の**多く**が絵文字シーケンスで構成されている
+  - [Unicode Emoji v17.0](https://unicode.org/emoji/charts/index.html)
+- 例：
+  - ❤️‍🔥 = ❤ 🔥（ U+2764 U+FE0F U+200D U+1F525 ）
+  - ❤️‍🩹 = ❤ 🩹（ U+2764 U+FE0F U+200D U+1F525 ）
+  - 🍋‍🟩 = 🍋 🟩（ U+1F34B U+200D U+1F7E9 ）
+    - ライム = レモン + 緑色の四角
+---
+
+# シーケンス単位で扱うには？
+
+- シーケンスをひとかたまりで処理をする必要がある
+- Java 20 以降なら、**BreakIterator.getCharacterInstance()** で扱える
+  - [\[JDK-8291660\] Grapheme support in BreakIterator - Java Bug System](https://bugs.openjdk.org/browse/JDK-8291660)
+  - それ以前のバージョンなら、ICU4J の BreakIterator を使う
+
+---
+
+# サンプルコード
+
+```java
+public static List<String> deconstruct(String text) {        
+        BreakIterator it = BreakIterator.getCharacterInstance();
+        it.setText(text);
+
+        List<String> clusters = new ArrayList<>();
+        int prev = 0;
+        while (it.next() != BreakIterator.DONE) {
+            clusters.add(text.substring(prev, it.current()));
+            prev = it.current();
+        }
+        return clusters;
+    }
+```
 
 ---
 
