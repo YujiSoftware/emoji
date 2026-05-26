@@ -198,7 +198,7 @@ Character.isEmoji("🤧".charAt(0))
 
 - charAt で **コードユニット**を取得している
   - 上位サロゲートのみになる（`\uD83E`）
-    - これは表示すると &#xD83E; （壊れた文字）になる
+    - これは表示すると &#xFFFD; （壊れた文字）になる
   - 絵文字ではないので、**isEmoji が false となる**
 
 <div class="info">
