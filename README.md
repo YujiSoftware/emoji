@@ -55,10 +55,6 @@ style: |
   span.supplement {
     font-size: 36px;
   }
-
-  section.puzzlers li {
-    /* font-size: 50px; */
-  }
 ---
 
 <!-- _class: lead -->
@@ -67,6 +63,17 @@ style: |
 <br>
 
 ![width:150px height:150px](img/photo.jpg) @YujiSoftware
+
+---
+
+# 今日のお話
+
+- 絵文字にまつわる3つの罠を紹介
+  - その罠を回避して、Java で正しく処理をするにはどうすればいいか
+
+<div class="info">
+今日の資料のURLは https://yuji.software/emoji です。
+</div>
 
 ---
 
@@ -130,7 +137,7 @@ $2 ==> true
 
 <!-- _class: lead -->
 
-# キーワード
+# 1つ目の罠
 # 「サロゲートペア」
 
 ---
@@ -234,6 +241,13 @@ Character.isEmoji('✌')
 |𩸽|ほっけ|U+29E3D|\uD867 \uDE3D|
 |𩹉|トビウオ|U+29E49|\uD867 \uDE49|
 |🄐|カッコエー|U+1F100|\uD83C \uDD10|
+
+---
+
+<!-- _class: lead -->
+
+# 2つ目の罠
+# 「絵文字シーケンス」
 
 ---
 
@@ -378,10 +392,15 @@ public static List<String> deconstruct(String text) {
 |4|!|U+0021|
 
 ---
+<!-- _class: lead -->
 
-# 絵文字の数え方
+# 3つ目の罠
+# 「文字数」
+---
 
-- 🍋‍🟩 （U+1F34B, U+200D, U+1F7E9）は何文字？
+# 絵文字の文字数
+
+- 🍋‍🟩 （U+1F34B, U+200D, U+1F7E9）は**何文字？**
   - 考え方によってばらばら
 
 |実装|単位|数|
@@ -406,6 +425,28 @@ public static List<String> deconstruct(String text) {
 - システム全体で同じになるように、意識合わせが必要
 
 ---
+
+# まとめ
+
+- 絵文字には罠がある
+  - サロゲートペア
+  - 絵文字シーケンス
+  - 文字の数え方
+  - …など（ほかにもあります！）
+
+
+- この罠に気をつけながら、正しく絵文字を扱えるようにしましょう！
+
+---
+
+<!-- _class: lead -->
+
+# Javaで絵文字を正しく扱おう🥲
+<br>
+
+![width:150px height:150px](img/photo.jpg) @YujiSoftware
+
+---
 # 補足：絵文字以外のシーケンス
 
 - 文字シーケンスは絵文字以外でも使われる
@@ -422,7 +463,7 @@ public static List<String> deconstruct(String text) {
 
 # 補足：絵文字の判定メソッド
 
-- Character には絵文字判定メソッドが複数ある
+- Character クラスには絵文字判定メソッドが複数ある
   - isEmoji
   - isEmojiPresentation
   - isEmojiModifier
@@ -497,7 +538,7 @@ public static List<String> deconstruct(String text) {
 
 ---
 
-# 絵文の判定方法
+# 絵文字の判定方法
 
 - 簡易な実装
   - 書記素クラスタに isExtendedPictographic が true になるコードポイントが含まれていれば絵文字と判定
@@ -511,17 +552,29 @@ public static List<String> deconstruct(String text) {
 
 - **存在しない**
 - Unicode の [emoji-test.txt](https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt) との総当りで判定すればできなくもない
-- ただ、絵文字で表示されるかどうかは最終的には環境依存
+- ただ、絵文字で表示されるかどうかは**最終的には環境依存**
     - 例：&#x25B6;&#xFE0E;（U+25B6）は、iOS では絵文字 &#x25B6;&#xFE0F; になる
 
 <hr>
+
 - 絵文字も平等に「文字」として扱うしかない
 
 ---
 
 # 参考資料
 
-- [Unicode Emoji v17.0](https://unicode.org/emoji/charts/index.html)
+- [Unicode Emoji](https://www.unicode.org/emoji/techindex.html)
+  - ユニコードコンソーシアムの絵文字に関する仕様
+- [emoji-data.txt](https://www.unicode.org/Public/17.0.0/ucd/emoji/emoji-data.txt)
+  - Emoji のプロパティをまとめたファイル
+- [emoji-test.txt](https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt)
+  - すべての絵文字の一覧
+  - 絵文字シーケンスの組み合わせもこれで確認できる
+
+---
+
+# 参考資料
+
 - [JDK-8354908: javac mishandles supplementary character in character literal](https://bugs.openjdk.org/browse/JDK-8354908)
   - Java 25 で修正されたバグ
   - 当初のチケット名は
