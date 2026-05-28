@@ -3,7 +3,7 @@ marp: true
 author: "@YujiSoftware"
 title: "Javaで絵文字を正しく扱おう🥲"
 description: "JJUG CCC 2026 Spring のセッション資料です。"
-image: "img/card.png"
+image: "https://yuji.software/emoji/img/card.png"
 theme: gaia
 style: |
   :root {
