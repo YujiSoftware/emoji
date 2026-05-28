@@ -218,9 +218,10 @@ span.supplement {
 ;">
 <h1 id="%E4%BB%8A%E6%97%A5%E3%81%AE%E3%81%8A%E8%A9%B1">今日のお話</h1>
 <ul>
-<li>絵文字にまつわる3つの罠を紹介
+<li>絵文字にまつわる罠を3つ紹介
 <ul>
-<li>その罠を回避して、Java で正しく処理をするにはどうすればいいか</li>
+<li>その罠を Java でどう回避すればいいか<br />
+<br /></li>
 </ul>
 </li>
 </ul>
@@ -328,7 +329,7 @@ span.supplement {
 }
 ;">
 <h1 id="java-puzzlers">Java Puzzlers</h1>
-<p>このコードを実行した結果は？</p>
+<p>Java 26 でこのコードを実行した結果は？</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> {
   IO.println(Character.isEmoji(<span class="hljs-string">&#x27;<img class="emoji" draggable="false" alt="🤧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f927.svg" data-marp-twemoji=""/>&#x27;</span>));
 }
@@ -1001,14 +1002,11 @@ span.supplement {
 <li>例：あ = \u3042</li>
 </ul>
 </li>
-<li>追加面に配置されている文字は16ビットで表現できないので、<strong>2つのコードユニットを使って</strong>扱う
+<li>追加面に配置されている文字は16ビットで表現できないので、<strong>サロゲートペア</strong>（<strong>2つのコードユニットの組</strong>）で表す
 <ul>
-<li>例：<img class="emoji" draggable="false" alt="🤧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f927.svg" data-marp-twemoji=""/> = \uD83E \uDD27</li>
-<li>この2つセットのことを<strong>サロゲートペア</strong>という
-<ul>
-<li>それぞれ<strong>上位</strong>サロゲート・<strong>下位</strong>サロゲートという</li>
-</ul>
-</li>
+<li>例：<img class="emoji" draggable="false" alt="🤧" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f927.svg" data-marp-twemoji=""/> = \uD83E \uDD27<br />
+　　　　　　↑　　↑<br />
+　<strong>上位</strong>サロゲート　<strong>下位</strong>サロゲート</li>
 </ul>
 </li>
 </ul>
@@ -2577,7 +2575,7 @@ span.supplement {
 <li><img class="emoji" draggable="false" alt="❤️‍🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764-fe0f-200d-1fa79.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="❤" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/2764.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🩹" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1fa79.svg" data-marp-twemoji=""/>（ U+2764, U+FE0F, U+200D, U+1FA79 ）</li>
 <li><img class="emoji" draggable="false" alt="🍋‍🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b-200d-1f7e9.svg" data-marp-twemoji=""/> = <img class="emoji" draggable="false" alt="🍋" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f34b.svg" data-marp-twemoji=""/> <img class="emoji" draggable="false" alt="🟩" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f7e9.svg" data-marp-twemoji=""/>（ U+1F34B, U+200D, U+1F7E9 ）
 <ul>
-<li>ライム = レモン + Zero With Joiner + 緑色の四角</li>
+<li>ライム = レモン + Zero Width Joiner + 緑色の四角</li>
 </ul>
 </li>
 </ul>
@@ -3517,6 +3515,129 @@ span.supplement {
   font-size: 36px;
 }
 ;">
+<h1 id="java-%E3%81%A7%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">Java で実装するには</h1>
+<ul>
+<li>書記素クラスター
+<ul>
+<li>BreakIterator.getCharacterInstance()</li>
+</ul>
+</li>
+<li>コードポイントの数
+<ul>
+<li>String#codePointCount(int beginIndex, int endIndex)</li>
+</ul>
+</li>
+<li>UTF-16 コードユニットの数
+<ul>
+<li>String#length()</li>
+</ul>
+</li>
+<li>UTF-8 バイト数
+<ul>
+<li>ない （<a href="https://stackoverflow.com/a/8512877/1932017">実装する</a>か <a href="https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Utf8.html">Google Guava の Utf8</a> を使う）</li>
+</ul>
+</li>
+</ul>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-theme="gaia" data-style=":root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+span.supplement {
+  font-size: 36px;
+}
+" lang="ja-JP" style="--theme:gaia;--style::root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-highlight: #1a0dab;
+  --color-dimmed: #888;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+/** 詰め気味に微調整 **/
+section &gt; ul, marp-pre {
+  margin: 0.5em 0;
+}
+h1 {
+  margin-bottom: 0.5em;
+}
+
+section.lead img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+img[alt~=&quot;center&quot;] {
+  display: block;
+  margin: 0 auto;
+}
+
+.info {
+  border: 2px solid #dee2e6;
+  background-color: #cff4fc;
+  color: #052c65;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+.info::before {
+  content: &quot;📝&quot;;
+}
+
+span.emphasis {
+  color: red;
+  font-weight: bold;
+}
+span.underline {
+  text-decoration: underline;
+}
+span.supplement {
+  font-size: 36px;
+}
+;">
 <h1 id="%E3%81%BE%E3%81%A8%E3%82%81">まとめ</h1>
 <ul>
 <li>
@@ -3529,11 +3650,11 @@ span.supplement {
 </ul>
 </li>
 <li>
-<p>この罠に気をつけながら、正しく絵文字を扱えるようにしましょう！</p>
+<p>罠に気をつけながら、正しく絵文字を扱えるようにしましょう！</p>
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-class="lead" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-class="lead" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3636,7 +3757,7 @@ span.supplement {
 <br />
 <p><img src="img/photo.jpg" alt="" style="width:150px;height:150px;" /> @YujiSoftware</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3742,7 +3863,7 @@ span.supplement {
 <li>例：日本語の濁音の表記は2種類ある
 <ul>
 <li>単独コードポイント「が」（U+304C）</li>
-<li>文字シーケンス「か ゙」（U+304B, U+3099）</li>
+<li>文字シーケンス「が」（U+304B, U+3099）</li>
 </ul>
 </li>
 </ul>
@@ -3753,7 +3874,7 @@ span.supplement {
 単独コードポイントの「が」が使われることが多いが、macOS のファイル名は文字シーケンスの方になっている
 </div>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="33" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3867,7 +3988,7 @@ span.supplement {
 <li>何が違うのか？</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -3976,7 +4097,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4099,7 +4220,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4207,12 +4328,16 @@ span.supplement {
 </li>
 <li>いまのところ、5つの肌色だけが定義されている
 <ul>
-<li><img class="emoji" draggable="false" alt="🏻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fb.svg" data-marp-twemoji=""/>️（U+1F3B）,	<img class="emoji" draggable="false" alt="🏼" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fc.svg" data-marp-twemoji=""/>️（U+1F3FC）,	<img class="emoji" draggable="false" alt="🏽" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fd.svg" data-marp-twemoji=""/>️（U+1F3FD）,	<img class="emoji" draggable="false" alt="🏾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fe.svg" data-marp-twemoji=""/>️（U+1F3FE）,	<img class="emoji" draggable="false" alt="🏿" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3ff.svg" data-marp-twemoji=""/>️（U+1F3FF）,</li>
+<li><img class="emoji" draggable="false" alt="🏻" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fb.svg" data-marp-twemoji=""/>️（U+1F3FB）</li>
+<li><img class="emoji" draggable="false" alt="🏼" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fc.svg" data-marp-twemoji=""/>️（U+1F3FC）</li>
+<li><img class="emoji" draggable="false" alt="🏽" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fd.svg" data-marp-twemoji=""/>️（U+1F3FD）</li>
+<li><img class="emoji" draggable="false" alt="🏾" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3fe.svg" data-marp-twemoji=""/>️（U+1F3FE）</li>
+<li><img class="emoji" draggable="false" alt="🏿" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.2/assets/svg/1f3ff.svg" data-marp-twemoji=""/>️（U+1F3FF）</li>
 </ul>
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4338,7 +4463,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4453,7 +4578,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4556,7 +4681,7 @@ span.supplement {
 <ul>
 <li><strong>拡張絵文字かどうか</strong>
 <ul>
-<li>単独で絵文字になる文字を判定するためのプロパティ
+<li>書記素クラスタの分解時に絵文字シーケンスを壊さないためのプロパティ
 <ul>
 <li>数字の 0 や # は<strong>含まない</strong></li>
 </ul>
@@ -4564,10 +4689,9 @@ span.supplement {
 <li><strong>将来の絵文字用に予約された領域</strong>も含まれている</li>
 </ul>
 </li>
-<li>書記素クラスタの分割処理の判断のためのもの</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4681,7 +4805,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="41" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4795,7 +4919,7 @@ span.supplement {
 <li>絵文字も平等に「文字」として扱うしかない</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -4914,7 +5038,7 @@ span.supplement {
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-theme="gaia" data-style=":root {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="44" data-theme="gaia" data-style=":root {
   --color-background: #fff;
   --color-foreground: #000;
   --color-highlight: #1a0dab;
@@ -5019,8 +5143,11 @@ span.supplement {
 <ul>
 <li>Java 25 で修正されたバグ</li>
 <li>当初のチケット名は<br />
-&quot;Character.isEmoji(int) returns incorrect results&quot;</li>
+&quot;Character.isEmoji(int) returns incorrect results&quot;
+<ul>
 <li>つまり、API のバグだと思われていた</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

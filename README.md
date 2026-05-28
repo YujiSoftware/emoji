@@ -68,9 +68,9 @@ style: |
 
 # 今日のお話
 
-- 絵文字にまつわる3つの罠を紹介
-  - その罠を回避して、Java で正しく処理をするにはどうすればいいか
-
+- 絵文字にまつわる罠を3つ紹介
+  - その罠を Java でどう回避すればいいか
+<br>
 <div class="info">
 今日の資料のURLは https://yuji.software/emoji です。
 </div>
@@ -81,7 +81,7 @@ style: |
 
 # Java Puzzlers
 
-このコードを実行した結果は？
+Java 26 でこのコードを実行した結果は？
 ```java
 void main() {
   IO.println(Character.isEmoji('🤧'));
@@ -159,10 +159,10 @@ $2 ==> true
 - Unicode を **16bit のコードユニット（符号単位）** で扱う
   - Java では、コードユニット = char 型
   - 例：あ = \u3042
-- 追加面に配置されている文字は16ビットで表現できないので、**2つのコードユニットを使って**扱う
+- 追加面に配置されている文字は16ビットで表現できないので、**サロゲートペア**（**2つのコードユニットの組**）で表す
   - 例：🤧 = \uD83E \uDD27
-  - この2つセットのことを**サロゲートペア**という
-    - それぞれ**上位**サロゲート・**下位**サロゲートという
+    　　　　　　↑　　↑
+    　**上位**サロゲート　**下位**サロゲート
 
 ---
 
@@ -338,7 +338,7 @@ Character.isEmoji(…) で true になる文字は？
   - ❤️‍🔥 = ❤ 🔥（ U+2764, U+FE0F, U+200D, U+1F525 ）
   - ❤️‍🩹 = ❤ 🩹（ U+2764, U+FE0F, U+200D, U+1FA79 ）
   - 🍋‍🟩 = 🍋 🟩（ U+1F34B, U+200D, U+1F7E9 ）
-    - ライム = レモン + Zero With Joiner + 緑色の四角
+    - ライム = レモン + Zero Width Joiner + 緑色の四角
 
 ---
 
@@ -425,6 +425,17 @@ public static List<String> deconstruct(String text) {
 - システム全体で同じになるように、意識合わせが必要
 
 ---
+# Java で実装するには
+
+- 書記素クラスター
+  - BreakIterator.getCharacterInstance()
+- コードポイントの数
+  - String#codePointCount(int beginIndex, int endIndex)
+- UTF-16 コードユニットの数
+  - String#length()
+- UTF-8 バイト数
+  - ない （[実装する](https://stackoverflow.com/a/8512877/1932017)か [Google Guava の Utf8](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Utf8.html) を使う）
+---
 
 # まとめ
 
@@ -435,7 +446,7 @@ public static List<String> deconstruct(String text) {
   - …など（ほかにもあります！）
 
 
-- この罠に気をつけながら、正しく絵文字を扱えるようにしましょう！
+- 罠に気をつけながら、正しく絵文字を扱えるようにしましょう！
 
 ---
 
@@ -452,7 +463,7 @@ public static List<String> deconstruct(String text) {
 - 文字シーケンスは絵文字以外でも使われる
   - 例：日本語の濁音の表記は2種類ある
     - 単独コードポイント「が」（U+304C）
-    - 文字シーケンス「か &#x3099;」（U+304B, U+3099）
+    - 文字シーケンス「か&#x3099;」（U+304B, U+3099）
 - そのため、絵文字の有無に関わらず**シーケンスを考慮して処理を行う必要がある**
 
 <div class="info">
@@ -500,7 +511,11 @@ public static List<String> deconstruct(String text) {
 - **絵文字修飾子かどうか**
   - Emoji Modifier Base と組み合わせて変化させる絵文字
 - いまのところ、5つの肌色だけが定義されている
-  -  🏻️（U+1F3B）,	🏼️（U+1F3FC）,	🏽️（U+1F3FD）,	🏾️（U+1F3FE）,	🏿️（U+1F3FF）,
+  - 🏻️（U+1F3FB）
+  -	🏼️（U+1F3FC）	
+  - 🏽️（U+1F3FD）	
+  - 🏾️（U+1F3FE）	
+  - 🏿️（U+1F3FF）
 
 ---
 
@@ -531,10 +546,9 @@ public static List<String> deconstruct(String text) {
 # isExtendedPictographic
 
 - **拡張絵文字かどうか**
-  - 単独で絵文字になる文字を判定するためのプロパティ
+  - 書記素クラスタの分解時に絵文字シーケンスを壊さないためのプロパティ
     - 数字の 0 や # は**含まない**
   - **将来の絵文字用に予約された領域**も含まれている
-- 書記素クラスタの分割処理の判断のためのもの
 
 ---
 
@@ -579,4 +593,4 @@ public static List<String> deconstruct(String text) {
   - Java 25 で修正されたバグ
   - 当初のチケット名は
     "Character.isEmoji(int) returns incorrect results"
-  - つまり、API のバグだと思われていた
+    - つまり、API のバグだと思われていた
