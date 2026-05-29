@@ -72,7 +72,7 @@ style: |
   - その罠を Java でどう回避すればいいか
 <br>
 <div class="info">
-今日の資料のURLは https://yuji.software/emoji です。
+今日の資料のURLは https://yuji.software/emoji/ です。
 </div>
 
 ---
@@ -345,8 +345,8 @@ Character.isEmoji(…) で true になる文字は？
 # シーケンスの罠
 
 - シーケンスの途中でぶった切ると文字が変わってしまう
-  - 例： "すっぱい🍋‍🟩".substring(0, 6);
-    　　==> "**すっぱい🍋‍**" （ライムがレモンになる）
+  - 例： "すっぱい🍋‍🟩".**substring(0, 6)**;
+    　　==> "すっぱい🍋‍"
 
 - 文字列に手を加える際は、ユーザが認識する1文字 = **書記素クラスタ**（Grapheme Cluster）単位で処理をする必要がある
 
@@ -354,7 +354,7 @@ Character.isEmoji(…) で true になる文字は？
 
 # 書記素クラスタ単位で扱うには？
 
-- Java 20 以降なら、**BreakIterator.getCharacterInstance()** で取り出す
+- Java 20 以降なら、**BreakIterator.getCharacterInstance()** を使う
   - [\[JDK-8291660\] Grapheme support in BreakIterator - Java Bug System](https://bugs.openjdk.org/browse/JDK-8291660)
 - それ以前のバージョンなら、[ICU4J](https://unicode-org.github.io/icu/userguide/icu4j/) の BreakIterator を使う
 
@@ -444,9 +444,8 @@ public static List<String> deconstruct(String text) {
   - 絵文字シーケンス
   - 文字の数え方
   - …など（ほかにもあります！）
-
-
-- 罠に気をつけながら、正しく絵文字を扱えるようにしましょう！
+- 絵文字からは逃げられない…！
+  - 罠に気をつけて、正しく絵文字を扱えるようにしましょう！
 
 ---
 
@@ -601,7 +600,7 @@ public static List<String> deconstruct(String text) {
 
 # 著作権表記
 
-- Twemoji
+- 絵文字：jdecked/Twemoji
   - [Graphics licensed under CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ---
