@@ -525,9 +525,9 @@ public static List<String> deconstruct(String text) {
   - Emoji Modifier Base と組み合わることができる絵文字
     - 人の顔や手など
 - 例：
-  - &#x270C;（U+270C）
+  - &#x270C;&#xFE0F;（U+270C）
     - &#x270C;&#x1F3FD;（U+270C, U+1F3FC）
-  - &#x1F385;（U+1F385）
+  - &#x1F385;&#xFE0F;（U+1F385）
     - &#x1F385;&#x1F3FD;（U+1F385, U+1F3FC）
 
 ---
@@ -556,18 +556,18 @@ public static List<String> deconstruct(String text) {
 
 - 簡易な実装
   - 書記素クラスタに isExtendedPictographic が true になるコードポイントが含まれていれば絵文字と判定
-- 問題点：
+- この実装の問題点
   - 旗シーケンス（&#x1F1FA;&#x1F1F8; など）やキーキャップシーケンス（&#x0030;&#xFE0F;&#x20E3; など）が絵文字と判定されない
   - &#x25B6;&#xFE0E;（U+25B6）などの記号も絵文字と判定される
 
 ---
 
-# 完璧な絵文字の判定方法
+# 完璧な絵文字の判定方法は？
 
 - **存在しない**
-- Unicode の [emoji-test.txt](https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt) との総当りで判定すればできなくもない
+  - Unicode の [emoji-test.txt](https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt) との総当りで判定すればできなくもない
 - ただ、絵文字で表示されるかどうかは**最終的には環境依存**
-    - 例：&#x25B6;&#xFE0E;（U+25B6）は、iOS では絵文字 &#x25B6;&#xFE0F; になる
+    - 例：&#x25B6;&#xFE0E;（U+25B6）は、iOS などでは絵文字 &#x25B6;&#xFE0F; になる
 
 <hr>
 
@@ -594,3 +594,20 @@ public static List<String> deconstruct(String text) {
   - 当初のチケット名は
     "Character.isEmoji(int) returns incorrect results"
     - つまり、API のバグだと思われていた
+- [絵文字がある種のUnicodeバグを世界から一掃しつつある件について｜Rui Ueyama](https://note.com/ruiu/n/nc9d93a45c2ec)
+  - まさにこれ
+
+---
+
+# 著作権表記
+
+- Twemoji
+  - [Graphics licensed under CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+---
+
+# JJUG CCC のアンケート
+
+|全体アンケート|セッションアンケート|
+|:--:|:--:|
+|![全体アンケート](img/all_qr.png)|![セッションアンケート](img/session_qr.png)|
