@@ -362,26 +362,27 @@ Character.isEmoji(…) で true になる文字は？
 
 # サンプルコード
 
+<span class="supplement">https://github.com/YujiSoftware/emoji/blob/main/src/Break.java</span>
 ```java
 public static List<String> deconstruct(String text) {        
-        BreakIterator it = BreakIterator.getCharacterInstance();
-        it.setText(text);
+    BreakIterator it = BreakIterator.getCharacterInstance();
+    it.setText(text);
 
-        List<String> clusters = new ArrayList<>();
-        int prev = 0;
-        while (it.next() != BreakIterator.DONE) {
-            clusters.add(text.substring(prev, it.current()));
-            prev = it.current();
-        }
-        return clusters;
+    List<String> clusters = new ArrayList<>();
+    int prev = 0;
+    while (it.next() != BreakIterator.DONE) {
+        clusters.add(text.substring(prev, it.current()));
+        prev = it.current();
     }
+    return clusters;
+}
 ```
 
 ---
 
 # 実行結果
 
-- "&#x1F34B;&#x200D;&#x1F7E9;&#x304B;&#x3099;&#x0033;&#xFE0F;&#x20E3;個!" → 5つに分割される
+- "🍋‍🟩が3️⃣個!" → 5つに分割される
 
 |Index|String|Codepoints|
 |:--:|:--:|:--|
@@ -400,7 +401,7 @@ public static List<String> deconstruct(String text) {
 
 # 絵文字の文字数
 
-- 🍋‍🟩 （U+1F34B, U+200D, U+1F7E9）は**何文字？**
+- 🍋‍🟩（U+1F34B, U+200D, U+1F7E9）は**何文字？**
   - 考え方によってばらばら
 
 |実装|単位|数|
@@ -451,10 +452,7 @@ public static List<String> deconstruct(String text) {
 
 <!-- _class: lead -->
 
-# Javaで絵文字を正しく扱おう🥲
-<br>
-
-![width:150px height:150px](img/photo.jpg) @YujiSoftware
+# ここから先は参考資料です
 
 ---
 # 補足：絵文字以外のシーケンス
@@ -605,8 +603,9 @@ public static List<String> deconstruct(String text) {
 
 ---
 
-# JJUG CCC のアンケート
+<!-- _class: lead -->
 
-|全体アンケート|セッションアンケート|
-|:--:|:--:|
-|![全体アンケート](img/all_qr.png)|![セッションアンケート](img/session_qr.png)|
+# Javaで絵文字を正しく扱おう🥲
+<br>
+
+![width:150px height:150px](img/photo.jpg) @YujiSoftware
